@@ -48,7 +48,7 @@
 <body>
 <div class="card card-container shadow-lg p-3 mb-5 bg-white rounded">
   <div class="card-body">
-    <h1 class="card-title text-center">Gerador de Jogos da Mega-Sena</h1>
+    <h1 class="card-title text-center">Gerador Mega Sena</h1>
     <form id="form-jogos" class="mt-4">
       <div class="form-group">
         <label for="numJogos">Quantidade de jogos:</label>
@@ -56,14 +56,21 @@
       </div>
       <button type="submit" class="btn btn-primary btn-block">Gerar</button>
     </form>
-    <div class="progress mt-3 loading">
-      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+    <div class="text-center loading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Carregando...</span>
+      </div>
     </div>
     <div id="result" class="result mt-3">
       <h2 class="text-center">Jogos Gerados</h2>
       <div id="jogos" class="mt-4"></div>
       <button id="new-games" class="btn btn-secondary btn-block mt-4">Novos Jogos</button>
     </div>
+
+    <!-- Footer do Card -->
+    <footer class="mt-4 text-center">
+      Desenvolvido por Salomão
+    </footer>
   </div>
 </div>
 
@@ -77,14 +84,19 @@
                     numeros.push(num);
                 }
             }
-            return numeros.sort((a, b) => a - b);
+            return numeros.sort((a, b) => a - b); // Ordena os números em ordem crescente
         }
 
         function gerarJogos(qtd) {
             let jogos = [];
-            for (let i = 0; i < qtd; i++) {
-                jogos.push(gerarNumeros());
+            let jogosSet = new Set(); // Usando um Set para evitar jogos duplicados
+            while (jogosSet.size < qtd) {
+                let jogo = gerarNumeros();
+                jogosSet.add(JSON.stringify(jogo)); // Converte o array em string para checar duplicatas
             }
+            jogosSet.forEach(jogo => {
+                jogos.push(JSON.parse(jogo)); // Converte de volta para array
+            });
             return jogos;
         }
 
